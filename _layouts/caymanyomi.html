@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "ja" }}">
+  <head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138442751-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-138442751-1');
+</script>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% if page.oto %}音が出ます：{% endif %}{{ page.title }} | {{ site.title }}</title>
+
+            {% seo title=false %}
+	    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ '../assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    {% if page.math %}
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    {% endif %}
+    <style>
+        {% if page.oto %}
+      .main-content {
+         padding-top: 12em;
+      }
+        {% endif %}
+        {% if page.iro %}
+      body {
+        background-color: #{{ page.iro }};
+        background-image: linear-gradient(-90deg, #{{ page.gra }}, #{{ page.iro }});
+      }
+      .main-content h1,
+      .main-content h2,
+      .main-content h3,
+      .main-content h4,
+      .main-content h5,
+      .main-content h6{
+        color: #{{ page.iro }};
+      }
+        {% endif %}
+        {% if page.background %}
+      body {
+        background-image: url('media/{{ page.background }}');
+        background-attachment: fixed;
+        background-position: left top;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      @media screen and (max-width: 640px){
+      body {
+        background-repeat: no-repeat;
+        background-size: auto;
+      }
+      }
+        {% endif %}
+        {% if page.oto %}
+      .main-content {
+         padding-top: 12em;
+      }
+      #logo {
+         background-image: url('../media/index/webtop2.png');
+      }
+        {% endif %}
+    </style>
+<link rel="apple-touch-icon" sizes="180x180" href="../icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../icons/favicon-16x16.png">
+<link rel="manifest" href="../icons/site.webmanifest">
+<link rel="mask-icon" href="../icons/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../icons/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="../icons/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+  </head>
+  <body{% if page.oto %} onload="showtext()"{% endif %}>
+        {% if page.oto %}
+	<div class="controller">
+            <!--p class="loading">
+                <em><img src="media/loader.gif" alt="Initializing audio"> Loading audio…</em>
+            </p-->
+
+            <p class="passage-audio" hidden>
+                <audio id="passage-audio" autoplay controls>
+                    <source src="media/{{ page.oto }}.mp3" type="audio/mp3">
+                    <source src="media/{{ page.oto }}.ogg" type="audio/ogg">
+                    <!--source src="media/{{ page.oto }}.wav" type="audio/wav"-->
+<!--object or embed for old browsers-->
+    <object class="error" type="audio/mpeg">
+        <param name="autostart" value="false">
+        <param name="src" value="media/{{ page.oto }}.mp3">
+

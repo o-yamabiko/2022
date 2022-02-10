@@ -1,0 +1,9 @@
+theme: jekyll-theme-cayman
+markdown: kramdown
+collections:
+  tusin:
+    output: true
+    permalink: :title.html
+  p:
+    output: true
+    permalink: /p/:title.html    
