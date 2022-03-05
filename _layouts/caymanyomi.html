@@ -164,11 +164,11 @@
           <div>
             <a href="../{{ page.kore }}.html">読み上げ版<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>
           </div>
-          {% endif %}
-          {% if page.navigation %}
-          <div>
-            {% if page.mae %}<a href="../{{ page.mae }}{% if page.print %}p{% endif %}.html">前号</a> | {% endif %}<a href="../bn.html">バックナンバー</a>{% if page.tugi %} | <a href="../{{ page.tugi }}{% if page.print %}p{% endif %}.html">次号</a>{% endif %}
-          </div>
+            {% if page.navigation %}
+            <div>
+              {% if page.mae %}<a href="../{{ page.mae }}p.html">前号</a> | {% endif %}<a href="../bn.html">バックナンバー</a>{% if page.tugi %} | <a href="../{{ page.tugi }}p.html">次号</a>{% endif %}
+            </div>
+            {% endif %}
           {% endif %}
        <div>制作： <a href="../{% if page.print %}p{% endif %}">音訳グループ やまびこ</a>{% if page.oto %}<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" />{% endif %}</div>
       <div itemscope>
