@@ -159,9 +159,6 @@
 
       {{ content }}
 
-    </section>
-   </div>
-
       {% if page.oto %}
       <footer id="otofooter">
        <div>制作： <a href="../">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
@@ -193,6 +190,9 @@
 	  <div class="site-footer-credits">背景画像： <a href="{{ page.imagefromurl }}">{{ page.imagefrom }}</a></div>
         {% endif %}
       {% endif %}
+
+    </section>
+   </div>
 
     {% if site.google_analytics %}
       <script type="text/javascript">
