@@ -11,10 +11,13 @@
   gtag('config', 'UA-138442751-1');
 </script>
     <meta charset='utf-8'>
+    {% if page.noindex %}
+    <meta name="robots" content="noindex">
+    {% endif %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{% if page.oto %}音が出ます：{% endif %}{{ page.title }} | {{ site.title }}</title>
 
-            {% seo title=false %}
+            {% seo %}
 	    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -92,4 +95,119 @@
     <object class="error" type="audio/mpeg">
         <param name="autostart" value="false">
         <param name="src" value="media/{{ page.oto }}.mp3">
+<!--object or embed for old browsers-->
+    <object class="error" type="audio/mpeg">
+        <param name="autostart" value="false">
+        <param name="src" value="media/{{ page.oto }}.mp3">
+        <param name="autoplay" value="false">
+        <param name="controller" value="false">
+        <embed src="media/{{ page.oto }}.mp3" controller="false" autoplay="false" autostart="false" type="audio/mpeg" />
+    </object>
+                </audio>
+            </p>
+            <!--p class="passage-audio-unavailable" hidden>
+                <em class="error"><strong>残念！</strong> お使いのブラウザはMP3やOggの形式の音声に対応していないため、読み上げ音声を再生できません。</em>
+            </p-->
+
+	    <div id="chuu">
+	        <div class="sreaderonly">このページの構成は 音声ブラウザで利用しにくいことがあります。 現代的なブラウザとスクリーンリーダーの組み合わせでは、正常に利用できることを確認しています。
+		</div>
+            </div>
+
+	    <p class="playback-rate" hidden>
+	    <button id="playback-playpause" type="button" class="parent"><img src="media/playpause.png" srcset="media/playpause.svg" alt="" class="gyo" /><span class="sreaderonly">再生 停止（Escキー、数字の0キー、アルファベットのpキー）</span><span class="popup">再生 停止（Escキー、数字の0キー、アルファベットのpキー）</span></button>
+	    <button id="playback-back" type="button" class="parent"><img src="media/rewind.png" srcset="media/rewind.svg" alt="" class="gyo" /><span class="sreaderonly">5秒戻る（数字の1キーか、左矢印キー）</span><span class="popup">5秒戻る（数字の1キーか、左矢印キー）</span></button>
+	    <button id="playback-forward" type="button" class="parent"><img src="media/forward.png" srcset="media/forward.svg" alt="" class="gyo" /><span class="sreaderonly">5秒進む（数字の4キーか、右矢印キー）</span><span class="popup">5秒進む（数字の4キーか、右矢印キー）</span></button>
+	    <span class="sreaderonly">読み上げ時間</span><span id="audiotime"></span>
+            <br />
+<button id="playback-slow" type="button" class="parent">ゆっくり<span class="sreaderonly">（数字の2キーか、下矢印キー）</span><span class="popup">数字の2キーか、下矢印キー</span></button>
+	    <button id="playback-rate" type="button" class="parent"><span id="skew">はやくち<span class="sreaderonly">（数字の3キーか、上矢印キー）</span><span class="popup">数字の3キーか、上矢印キー</span></span></button>
+	    <span class="sreaderonly">読み上げ速さ</span><span id="hayasa">1&times;</span>
+            </p>
+	    <!--p class="playback-rate-unavailable" hidden>
+                <em>(お使いのブラウザは <code>HTMLMediaElement.playbackRate</code> に対応していないようです。そのため、読み上げの速さを変えることができません。)</em>
+            </p-->
+
+	    <p id="showchar">
+              <label for="hyoji" class="bluebox">文字の表示
+                <input type="checkbox" id="hyoji" onclick="showtext()">
+                <span class="checkmark"></span>
+              </label>
+              <span id="view" class="autofocus-current-word">
+                <label for="autofocus-current-word" class="bluebox">音声と画面の連動
+		  <input type="checkbox" id="autofocus-current-word" checked="checked">
+                  <span class="checkmark"></span>
+                </label>
+              </span>
+	    </p>
+
+            <noscript>
+                <p class="error"><em><strong>お知らせ:</strong> このページの読み上げ機能 HTML5 read-along を利用するには、 JavaScript を有効にしておく必要があります。</em></p>
+            </noscript>
+	    <div id="forprint"><a href="/p{{ page.url }}">音声なし（印刷用）ページ</a></div>
+        </div>
+  <div id="logo"></div>
+        {% endif %}
+   <div id="passage-text" class="passage">
+    <section class="main-content" id="bun"{% if page.oto %} style="display:none"{% endif %}>
+
+      {% if site.github.is_project_page %}
+        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+      {% endif %}
+      {% if site.show_downloads %}
+        <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
+        <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
+      {% endif %}
+
+      {{ content }}
+
+    </section>
+      <footer class="printfooter{% if page.oto %} otofooter{% endif %}">
+       {% if page.navigation %}
+<div class="navi">
+         {% if page.mae %}
+<a href="../{{ page.mae }}.html">前号</a>
+         {% endif %}
+| <a href="../bn.html">バックナンバー</a>
+         {% if page.tugi %}
+| <a href="../{{ page.tugi }}.html">次号</a>
+         {% endif %}
+</div> 
+       {% endif %}
+       <div class="site-footer-owner"><a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
+      <div itemscope>
+    	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">ページ更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
+      </div>
+       {% if site.github.is_project_page %}
+          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
+       {% endif %}
+         <span class="site-footer-credits">このページは<a href="https://pages.github.com">GitHub Pages</a>によって生成されました。</span>
+       {% if page.imagefrom %}
+	  <div class="site-footer-credits">背景画像： <a href="{{ page.imagefromurl }}">{{ page.imagefrom }}</a></div>
+        {% endif %}
+        {% if page.oto %}
+          <div class="site-footer-credits">このページの読み上げ機能に使っているJavaScriptについて：<br />
+	    <span lang="en">The read-along feature is powered by <a href="https://github.com/westonruter/html5-audio-read-along">the read-along code</a> created by <a href="http://westonruter.github.com/">Weston Ruter</a>, licensed <a href="http://www.opensource.org/licenses/MIT" rel="license">MIT</a>/<a href="http://www.gnu.org/licenses/gpl.html" rel="license">GPL</a>. Partly modified from the original.</span></div>
+        {% endif %}
+      </footer>
+   </div>
+
+    {% if site.google_analytics %}
+      <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '{{ site.google_analytics }}', 'auto');
+        ga('send', 'pageview');
+      </script>
+    {% endif %}
+        <script src="js/hscroll.js"></script>
+        <script src="js/read-along.js"></script>
+        <script src="js/main.js"></script>
+	<script src="js/showtext.js"></script>
+  </body>
+</html>
+
 
