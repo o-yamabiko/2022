@@ -140,7 +140,7 @@
 	    <div id="forprint"><a href="../{{ page.kore }}p.html">音声なし（印刷用）ページ</a></div>
           {% if page.navigation %}
           <div class="navi">
-            {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navibutton"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navibutton"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
+            {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">前号</a></span> {% endif %}<span class="navibutton"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} <span class="navibutton"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
           </div>
           {% endif %}
         </div>
