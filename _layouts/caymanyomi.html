@@ -93,7 +93,7 @@
                     <!--source src="media/{{ page.oto }}.wav" type="audio/wav"-->
 <!--object or embed for old browsers-->
     <object class="error" type="audio/mpeg">
-        <param name="autostart" value="false">
+        <param name="autostart" value="true">
         <param name="src" value="media/{{ page.oto }}.mp3">
 <!--object or embed for old browsers-->
     <object class="error" type="audio/mpeg">
@@ -130,7 +130,7 @@
 
 	    <p id="showchar">
               <label for="hyoji" class="bluebox">文字の表示
-                <input type="checkbox" id="hyoji" onclick="showtext()">
+                <input type="checkbox" id="hyoji" onclick="showtext()" checked="checked">
                 <span class="checkmark"></span>
               </label>
               <span id="view" class="autofocus-current-word">
@@ -161,12 +161,9 @@
 
       {{ content }}
 
-    </section>
       <footer class="printfooter{% if page.oto %} otofooter{% endif %}">
        {% if page.navigation %}
-<div class="navi">
-         {% if page.mae %}<a href="../{{ page.mae }}.html">前号</a> | {% endif %}<a href="../bn.html">バックナンバー</a>{% if page.tugi %} | <a href="../{{ page.tugi }}.html">次号</a>{% endif %}
-</div> 
+         {% if page.mae %}<span class="navi"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navi"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navi"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
        {% endif %}
        <div class="site-footer-owner"><a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
       <div itemscope>
@@ -184,6 +181,7 @@
 	    <span lang="en">The read-along feature is powered by <a href="https://github.com/westonruter/html5-audio-read-along">the read-along code</a> created by <a href="http://westonruter.github.com/">Weston Ruter</a>, licensed <a href="http://www.opensource.org/licenses/MIT" rel="license">MIT</a>/<a href="http://www.gnu.org/licenses/gpl.html" rel="license">GPL</a>. Partly modified from the original.</span></div>
         {% endif %}
       </footer>
+    </section>
    </div>
 
     {% if site.google_analytics %}
