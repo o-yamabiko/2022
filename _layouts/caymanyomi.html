@@ -87,7 +87,11 @@
   <body{% if page.oto %} onload="showtext()"{% endif %}>
         {% if page.oto %}
 	<div class="controller">
-
+       {% if page.navigation %}
+       <div class="navi">
+         {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navibutton"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navibutton"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
+       </div>
+       {% endif %}
             <p class="passage-audio" hidden>
                 <audio id="passage-audio" autoplay controls>
                     <source src="media/{{ page.oto }}.mp3" type="audio/mp3">
@@ -138,7 +142,7 @@
             <noscript>
                 <p class="error"><em><strong>お知らせ:</strong> このページの読み上げ機能 HTML5 read-along を利用するには、 JavaScript を有効にしておく必要があります。</em></p>
             </noscript>
-	    <div id="forprint"><a href="/p{{ page.url }}">音声なし（印刷用）ページ</a></div>
+	    <div id="forprint"><a href="{{ page.docid }}p.html">音声なし（印刷用）ページ</a></div>
         </div>
   <div id="logo"></div>
         {% endif %}
@@ -156,11 +160,6 @@
       {{ content }}
 
       <footer class="printfooter{% if page.oto %} otofooter{% endif %}">
-       {% if page.navigation %}
-       <div class="navi">
-         {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navibutton"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navibutton"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
-       {% endif %}
-       </div>
        <div class="site-footer-owner"><a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
       <div itemscope>
     	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">ページ更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
