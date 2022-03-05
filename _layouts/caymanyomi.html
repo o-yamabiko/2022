@@ -137,12 +137,13 @@
             <noscript>
                 <p class="error"><em><strong>お知らせ:</strong> このページの読み上げ機能 HTML5 read-along を利用するには、 JavaScript を有効にしておく必要があります。</em></p>
             </noscript>
-	    <div id="forprint"><a href="../{{ page.kore }}p.html">［印刷用］</a></div>
           {% if page.navigation %}
           <div class="navi">
-            {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">〈前号</a></span> {% endif %}<span class="navibutton"><a href="../bn.html">リスト</a></span>{% if page.tugi %} <span class="navibutton"><a href="../{{ page.tugi }}.html">次号〉</a></span>{% endif %}
+            {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">〈前号</a></span> {% endif %}<span class="navibutton"><a href="../bn.html">リスト</a></span>{% if page.tugi %} <span class="navibutton"><a href="../{{ page.tugi }}.html">次号〉</a></span>{% endif %} 
+            <span id="forprint"><a href="../{{ page.kore }}p.html">［印刷用］</a></span>
           </div>
           {% endif %}
+
         </div>
   <div id="logo"></div>
         {% endif %}
