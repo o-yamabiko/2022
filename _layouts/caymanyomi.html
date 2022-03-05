@@ -137,7 +137,7 @@
             <noscript>
                 <p class="error"><em><strong>お知らせ:</strong> このページの読み上げ機能 HTML5 read-along を利用するには、 JavaScript を有効にしておく必要があります。</em></p>
             </noscript>
-	    <div id="forprint"><a href="{{ page.mm }}p.html">音声なし（印刷用）ページ</a></div>
+	    <div id="forprint"><a href="{{ page.mm | %2d }}p.html">音声なし（印刷用）ページ</a></div>
           {% if page.navigation %}
           <div class="navi">
             {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navibutton"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navibutton"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
@@ -159,11 +159,12 @@
 
       {{ content }}
 
-      {% if page.oto=false %}
+      {% if page.oto %}
+      {% else %}
       <footer id="printfooter">
           {% if page.print %}
           <div>
-            <a href="{{ page.mm }}.html">読み上げ版<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>
+            <a href="{{ page.mm | %2d }}.html">読み上げ版<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>
           </div>
           {% endif %}
           {% if page.navigation %}
