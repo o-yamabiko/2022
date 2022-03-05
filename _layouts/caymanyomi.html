@@ -87,19 +87,11 @@
   <body{% if page.oto %} onload="showtext()"{% endif %}>
         {% if page.oto %}
 	<div class="controller">
-            <!--p class="loading">
-                <em><img src="media/loader.gif" alt="Initializing audio"> Loading audio…</em>
-            </p-->
 
             <p class="passage-audio" hidden>
                 <audio id="passage-audio" autoplay controls>
                     <source src="media/{{ page.oto }}.mp3" type="audio/mp3">
                     <source src="media/{{ page.oto }}.ogg" type="audio/ogg">
-                    <!--source src="media/{{ page.oto }}.wav" type="audio/wav"-->
-<!--object or embed for old browsers-->
-    <object class="error" type="audio/mpeg">
-        <param name="autostart" value="true">
-        <param name="src" value="media/{{ page.oto }}.mp3">
 <!--object or embed for old browsers-->
     <object class="error" type="audio/mpeg">
         <param name="autostart" value="false">
@@ -110,9 +102,6 @@
     </object>
                 </audio>
             </p>
-            <!--p class="passage-audio-unavailable" hidden>
-                <em class="error"><strong>残念！</strong> お使いのブラウザはMP3やOggの形式の音声に対応していないため、読み上げ音声を再生できません。</em>
-            </p-->
 
 	    <div id="chuu">
 	        <div class="sreaderonly">このページの構成は 音声ブラウザで利用しにくいことがあります。 現代的なブラウザとスクリーンリーダーの組み合わせでは、正常に利用できることを確認しています。
