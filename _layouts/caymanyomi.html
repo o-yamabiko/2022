@@ -159,7 +159,9 @@
 
       {{ content }}
 
-      <footer class="printfooter{% if page.oto %} otofooter{% endif %}">
+    </section>
+   </div>
+      <footer class="{% if page.oto %}otofooter{% else %}printfooter{% endif %}">
        制作：<div class="site-footer-owner"><a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
       <div itemscope>
     	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
@@ -171,8 +173,6 @@
           <div class="site-footer-credits"><span lang="en">The read-along feature is powered by <a href="https://github.com/westonruter/html5-audio-read-along">the read-along code</a> created by <a href="http://westonruter.github.com/">Weston Ruter</a>, licensed <a href="http://www.opensource.org/licenses/MIT" rel="license">MIT</a>/<a href="http://www.gnu.org/licenses/gpl.html" rel="license">GPL</a>. Partly modified from the original.</span></div>
         {% endif %}
       </footer>
-    </section>
-   </div>
 
     {% if site.google_analytics %}
       <script type="text/javascript">
