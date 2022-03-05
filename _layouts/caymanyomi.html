@@ -168,8 +168,10 @@
 
       <footer class="printfooter{% if page.oto %} otofooter{% endif %}">
        {% if page.navigation %}
-         {% if page.mae %}<span class="navi"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navi"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navi"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
+       <div class="navi">
+         {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navibutton"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navibutton"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
        {% endif %}
+       </div>
        <div class="site-footer-owner"><a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
       <div itemscope>
     	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">ページ更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
