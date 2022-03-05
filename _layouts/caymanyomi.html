@@ -123,7 +123,7 @@
 
 	    <p id="showchar">
               <label for="hyoji" class="bluebox">文字の表示
-                <input type="checkbox" id="hyoji" onclick="showtext()" checked="checked">
+                <input type="checkbox" id="hyoji" onclick="showtext()">
                 <span class="checkmark"></span>
               </label>
               <span id="view" class="autofocus-current-word">
@@ -159,19 +159,39 @@
 
       {{ content }}
 
-    </section>
-   </div>
-      <footer class="{% if page.oto %}otofooter{% else %}printfooter{% endif %}">
-       制作：<div class="site-footer-owner"><a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
+      {% if page.oto=false %}
+      <footer id="printfooter">
+          {% if page.print %}
+          <div>
+            <a href="{{ page.mm }}.html">読み上げ版<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>
+          </div>
+          {% endif %}
+          {% if page.navigation %}
+          <div>
+            {% if page.mae %}<a href="../{{ page.mae }}.html">前号</a> | {% endif %}<a href="../bn.html">バックナンバー</a>{% if page.tugi %} | <a href="../{{ page.tugi }}.html">次号</a>{% endif %}
+          </div>
+          {% endif %}
+       <div class="site-footer-owner">制作： <a href="../p">音訳グループ やまびこ</a></div>
       <div itemscope>
     	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
       </div>
        {% if page.imagefrom %}
 	  <div class="site-footer-credits">背景画像： <a href="{{ page.imagefromurl }}">{{ page.imagefrom }}</a></div>
         {% endif %}
-        {% if page.oto %}
-          <div class="site-footer-credits"><span lang="en">The read-along feature is powered by <a href="https://github.com/westonruter/html5-audio-read-along">the read-along code</a> created by <a href="http://westonruter.github.com/">Weston Ruter</a>, licensed <a href="http://www.opensource.org/licenses/MIT" rel="license">MIT</a>/<a href="http://www.gnu.org/licenses/gpl.html" rel="license">GPL</a>. Partly modified from the original.</span></div>
+      {% endif %}
+    </section>
+   </div>
+      {% if page.oto %}
+      <footer id="otofooter">
+       <div class="site-footer-owner">制作： <a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
+      <div itemscope>
+    	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
+      </div>
+       {% if page.imagefrom %}
+	  <div class="site-footer-credits">背景画像： <a href="{{ page.imagefromurl }}">{{ page.imagefrom }}</a></div>
         {% endif %}
+          <div class="site-footer-credits"><span lang="en">Powered by <a href="https://github.com/westonruter/html5-audio-read-along">the read-along code</a> created by <a href="http://westonruter.github.com/">Weston Ruter</a>, <a href="http://www.opensource.org/licenses/MIT" rel="license">MIT</a>/<a href="http://www.gnu.org/licenses/gpl.html" rel="license">GPL</a>.</span></div>
+      {% endif %}
       </footer>
 
     {% if site.google_analytics %}
