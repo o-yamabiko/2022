@@ -137,7 +137,7 @@
             <noscript>
                 <p class="error"><em><strong>お知らせ:</strong> このページの読み上げ機能 HTML5 read-along を利用するには、 JavaScript を有効にしておく必要があります。</em></p>
             </noscript>
-	    <div id="forprint"><a href="{{ page.mm | %2d }}p.html">音声なし（印刷用）ページ</a></div>
+	    <div id="forprint"><a href="../{{ page.tusin }}p.html">音声なし（印刷用）ページ</a></div>
           {% if page.navigation %}
           <div class="navi">
             {% if page.mae %}<span class="navibutton"><a href="../{{ page.mae }}.html">前号</a></span> | {% endif %}<span class="navibutton"><a href="../bn.html">バックナンバー</a></span>{% if page.tugi %} | <span class="navibutton"><a href="../{{ page.tugi }}.html">次号</a></span>{% endif %}
@@ -159,32 +159,12 @@
 
       {{ content }}
 
-      {% if page.oto %}
-      {% else %}
-      <footer id="printfooter">
-          {% if page.print %}
-          <div>
-            <a href="{{ page.mm | %2d }}.html">読み上げ版<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>
-          </div>
-          {% endif %}
-          {% if page.navigation %}
-          <div>
-            {% if page.mae %}<a href="../{{ page.mae }}.html">前号</a> | {% endif %}<a href="../bn.html">バックナンバー</a>{% if page.tugi %} | <a href="../{{ page.tugi }}.html">次号</a>{% endif %}
-          </div>
-          {% endif %}
-       <div class="site-footer-owner">制作： <a href="../p">音訳グループ やまびこ</a></div>
-      <div itemscope>
-    	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
-      </div>
-       {% if page.imagefrom %}
-	  <div class="site-footer-credits">背景画像： <a href="{{ page.imagefromurl }}">{{ page.imagefrom }}</a></div>
-        {% endif %}
-      {% endif %}
     </section>
    </div>
+
       {% if page.oto %}
       <footer id="otofooter">
-       <div class="site-footer-owner">制作： <a href="{{ site.url }}">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
+       <div>制作： <a href="../">音訳グループ やまびこ<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a></div>
       <div itemscope>
     	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
       </div>
@@ -192,8 +172,27 @@
 	  <div class="site-footer-credits">背景画像： <a href="{{ page.imagefromurl }}">{{ page.imagefrom }}</a></div>
         {% endif %}
           <div class="site-footer-credits"><span lang="en">Powered by <a href="https://github.com/westonruter/html5-audio-read-along">the read-along code</a> created by <a href="http://westonruter.github.com/">Weston Ruter</a>, <a href="http://www.opensource.org/licenses/MIT" rel="license">MIT</a>/<a href="http://www.gnu.org/licenses/gpl.html" rel="license">GPL</a>.</span></div>
-      {% endif %}
       </footer>
+      {% else %}
+      <footer class="printfooter">
+          {% if page.print %}
+          <div>
+            <a href="../{{ page.tusin }}.html">読み上げ版<img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>
+          </div>
+          {% endif %}
+          {% if page.navigation %}
+          <div>
+            {% if page.mae %}<a href="../{{ page.mae }}{% if page.print %}p{% endif %}.html">前号</a> | {% endif %}<a href="../bn.html">バックナンバー</a>{% if page.tugi %} | <a href="../{{ page.tugi }{% if page.print %}p{% endif %}}.html">次号</a>{% endif %}
+          </div>
+          {% endif %}
+       <div>制作： <a href="../p">音訳グループ やまびこ</a></div>
+      <div itemscope>
+    	<time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">更新日： {{ page.date | date: "%Y年%m月%d日" }}</time>
+      </div>
+       {% if page.imagefrom %}
+	  <div class="site-footer-credits">背景画像： <a href="{{ page.imagefromurl }}">{{ page.imagefrom }}</a></div>
+        {% endif %}
+      {% endif %}
 
     {% if site.google_analytics %}
       <script type="text/javascript">
