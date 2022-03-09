@@ -9,7 +9,6 @@
 # mm $3
 # todo: CD製作時間の改行（行詰め、  入れ）
 # todo: tugi を自動でありなし区別する
-# todo: github の jekyll が_tusin に追加したファイルを認識しないので、すべてのmdを2022直下に置いた。そのために ./_tusin 関連を書き直す必要がある。
 
 # 今号、前号、次号の年と月を取り出し
 if [[ $3 == '01' ]] ; then
@@ -69,8 +68,6 @@ echo "$imagefromurl" >> ./media/$3/memo
 if [[ $1 != 'text' ]] ; then
 
 # create base md
-mkdir -p _tusin
-cd _tusin
 
 echo '---' > $3.md
 echo 'layout: caymanyomi' >> $3.md
@@ -88,8 +85,6 @@ echo 'mae: '$maey'/'$maem >> $3.md
 echo 'kore: '$2'/'$3 >> $3.md
 echo 'tugi: '$tugy'/'$tugm >> $3.md
 echo '---' >> $3.md
-
-cd ..
 
 # MultimediaDAISY2.02 directory に移動
 cd ./$1
@@ -184,7 +179,7 @@ LC_COLLATE=C.UTF-8 sed \
     -e ':a;N;$!ba;s/\(<span[^>]*>[0-9]*\.<\/span>\)\n\(<span\)/\n\1\2/g' \
     temp3 > temp4
 LC_COLLATE=C.UTF-8 sed \
-    -e 's/<span[^>]*>\(cut[0-9]\)\(\.[jp][pn]g\)ppp<\/span>/![\1](media\/'$2'\/\1\2){: .migi}\n/g' \
+    -e 's/<span[^>]*>\(cut[0-9]\)\(\.[jp][pn]g\)ppp<\/span>/![\1](media\/'$3'\/\1\2){: .migi}\n/g' \
     -e 's/ppp<\/span>/<\/span>\n/g' \
     -e 's/\(<span[^>]*>\)\(#*\)&ensp;/\n\2 \1/g' \
     -e 's/<span\([^>]*\)>\( href[^(]*\)((\([^)]*\)))<\/span>/<a\1\2>\3<\/a>/g' \
@@ -199,10 +194,13 @@ LC_COLLATE=C.UTF-8 sed \
     -e 's/>classhaigo/ class=\"haigo\">/g' \
     -e 's/&ensp;/ /g' \
     -e '/<span[^>]*>&thinsp;&thinsp;p*<\/span>/d' \
-    temp4 > temp41
+    temp4 > temp40
 
 LC_COLLATE=C.UTF-8 sed \
-    -e ':a;N;$!ba;s/<span[^>]*>\(#*\)<\/span>\n\(<span[^>]*>[^\n]*<\/span>\)/\1 \2\n/g' \
+    -e ':a;N;$!ba;s/<span[^>]*>\(##*\)<\/span>\n\(<span[^>]*>[^\n]*<\/span>\)/\1 \2\n/g' \
+    temp40 > temp41
+
+LC_COLLATE=C.UTF-8 sed \
     -e 's/ppp<\/a>/<\/a>\n/g' \
     -e ':a;N;$!ba;s/|\n/|/g' \
     temp41 > temp42
@@ -224,7 +222,7 @@ LC_COLLATE=C.UTF-8 sed \
     -e 's/\(.*03-3910-7331.*\)$/\1  /' \
     -e 's/\(.*href="\)\(".*このサイトについて.*\)$/\1mailto:ymbk2016ml@gmail\.com?Subject=やまびこウェブサイトについて\2/' \
     -e 's/\(<rp>(<\/rp><rt>（<\/rt><rp>)<\/rp>\)\([ぁ-ゟ゠ァ-ヿ　（）]*\)<rp>(<\/rp><rt>）<\/rt><rp>)<\/rp>/\2\1/g' \
-    -e 's/（カット\([0-9]*\)）<\/span>/<\/span>\n\n<img class=\"migi\" src=\"media\/'$2'\/cut\1\.png" alt=\"\" \/>\n/' \
+    -e 's/（カット\([0-9]*\)）<\/span>/<\/span>\n\n<img class=\"migi\" src=\"media\/'$3'\/cut\1\.png" alt=\"\" \/>\n/' \
     -e 's/\(<span[^>]*>No\.[0-9 ]*<\/span>\)/\1/' \
     temp5 > temp6
 
@@ -232,7 +230,7 @@ LC_COLLATE=C.UTF-8 sed \
     if [[ `grep "読み上げは省略" temp6` == '' ]] ; then
 
       csplit temp6 /月.*の.*答/
-      cat xx00 q.tsv xx01 >> ../_tusin/$3.md
+      cat xx00 q.tsv xx01 >> ../$3.md
 
     else
 
@@ -240,30 +238,30 @@ LC_COLLATE=C.UTF-8 sed \
       LC_COLLATE=C.UTF-8 sed \
           -e '/読み上げは省略/d' \
           xx01 > xx01m
-      cat xx00 q.tsv xx01m >> ../_tusin/$3.md
+      cat xx00 q.tsv xx01m >> ../$3.md
 
     fi
 
 
 # wavからmp3とoggを生成
-cd sounds
+#cd sounds
 
-for f in *.wav
+for f in ./sounds/*.wav
   do
     ffmpeg -i "$f" -c:a libmp3lame -q:a 2 "${f/%wav/mp3}" -c:a libvorbis -q:a 4 "${f/%wav/ogg}"
   done
 
 # mp3とoggを所定の場所に置く
-cd -
+#cd -
 mkdir -p ../media/$3
-cp -i sounds/*.mp3 ../media/$3
-cp -i sounds/*.ogg ../media/$3
+cp -i ./sounds/*.mp3 ../media/$3
+cp -i ./sounds/*.ogg ../media/$3
 cd ..
 
 # $1 == text の時 $3.md がすでにあれば
-elif [ -f "./_tusin/$3.md" ]; then
+elif [ -f "$3.md" ]; then
 # memoのデータに従ってmm.mdのヘッダ書き換え
-mv ./_tusin/$3.md ./_tusin/$3old.md
+mv $3.md $3old.md
 
 sed \
     -e "s|^iro:.*|$iro|" \
@@ -271,9 +269,9 @@ sed \
     -e "s|^background:.*|$background|" \
     -e "s|^imagefrom:.*|$imagefrom|" \
     -e "s|^imagefromurl:.*|$imagefromurl|" \
-    "./_tusin/"$3"old.md" > "./_tusin/"$3".md"
+    $3old.md > $3.md
 
-rm ./_tusin/$3old.md
+rm $3old.md
 
 # $1 == text なのに $3.md が無ければ
 else
@@ -282,14 +280,13 @@ echo "まずDAISY2.02データからmdを生成してほしい"
 fi
 
 # $3.md が無ければ
-if [ ! -f "./_tusin/$3.md" ]; then
+if [ ! -f "$3.md" ]; then
 # 何もしない
     :
 # $3.md があれば
 else
 
 # 音声付きページmm.mdから音声無しページmmp.md作成
-cd _tusin
 
 sed \
     -e '/^oto:/d' \
@@ -300,7 +297,6 @@ sed \
     -e 's/^\(tugi:.*\)/\1\nnoindex: true\nprint: true/' \
     $3".md" > $3"p.md"
 
-cd -
 
 # バックナンバーリストに追加
 # index.md がすでにあれば

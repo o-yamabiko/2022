@@ -2,8 +2,4 @@ lang: ja
 theme: jekyll-theme-cayman
 show_downloads: false
 markdown: kramdown
-collections:
-  tusin:
-    output: true
-    permalink: :title.html
 
