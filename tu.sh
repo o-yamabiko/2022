@@ -7,10 +7,12 @@
 # MultimediaDAISY2.02 directory $1; できているテキストの編集だけするなら$1=text
 # yyyy $2
 # mm $3
-# todo: CD製作時間の改行（行詰め、  入れ）
-# todo: tugi を自動でありなし区別する
-# todo: クイズの問題に付くルビが正しく認識できずq.tsvが空になる。原稿のルビ形式を全角＊に変更してみる
-# todo: blockquote が消えてしまう。残るようにする。
+# done: CD製作時間の改行（行詰め、  入れ）
+# done: クイズの問題に付くルビが正しく認識できずq.tsvが空になる。やり方を根本的に変えて、xmri_nnnnを1個ずつ探し、開始時刻終了時刻を計算して入れ、nnnnを+1するのをxmri_nnnnがみつからなくなるまで繰り返す
+# done: 原稿のルビ形式を全角＊に変更してみる
+# done: blockquote が消えてしまう。残るようにする。
+# todo: トップページの「最新号」リンクを自動更新
+# todo: tugi を自動でありなし区別し、前月号にもtugiを挿入
 
 # 今号、前号、次号の年と月を取り出し
 if [[ $3 == '01' ]] ; then
@@ -91,158 +93,89 @@ echo '---' >> $3.md
 # MultimediaDAISY2.02 directory に移動
 cd ./$1
 
-# extract begin-end time
-sed \
-    -e 's/^.* id=\"\([a-zA-Z0-9_]*\)\".*npt=\([0-9\.]*\)s.*npt=\([0-9\.]*\)s.*/\2\t\3\t\1\t/' \
-    -e '/ *</d' \
-    -e 's/<\/*b>//g' \
-    mrii0001.smil > begin-end.tsv
-# extract paroles
-LC_COLLATE=C.UTF-8 sed \
-    -e 's/<span class=\"infty_silent\">\([^<]*\)<\/span>/\1/g' \
-    -e 's/\(ケス\)\(<span[^>]*>\)/\2\1/g' \
-    -e 's/\(<\/span>\)\(スケ\)/\2\1/g' \
-    -e 's/<\/span>/{endspan}/g' \
-    -e 's/\r//' \
-    index.html > temp0
-LC_COLLATE=C.UTF-8 sed \
-    -e 's/<p align=\"right\" style=\"text-align:right;\">\(<span[^>]*>\)/\1classhaigo/g' \
-    -e 's/\({endspan}\)\([^<]*\)</\2\1</g' \
-    -e 's/<p>//' \
-    -e 's/\(<[^>]*>\)<\/p>/ppp\1/g' \
-    -e 's/\({endspan}\)<\/p>/ppp\1/g' \
-    -e 's/\(_+-[^+]*+-_\)\(<span id[^>]*>\)/\2\1/g' \
-    -e 's/<span class=\"infty_silent_space\">\([^{]*\){endspan}/ /g' \
-    -e 's/\(_+-[^+]*+-_\)\(<span[^>]*>\)/\2\1/g' \
-    -e 's/<span class=\"ja\">\([^{]*\){endspan}/\1/g' \
-    -e 's/{endspan}<span id=/{endspan}\n<span id=/g' \
-    -e 's/\(<span id=[^>]*>\)##\({endspan}\)\&ensp;\(<span id=[^>]*>\)Let/\1\2\n\3## Let/g' \
-    -e 's/{endspan}\&ensp;<span id=/{endspan}\n<span id=/g' \
-    -e 's/{endspan}\&nbsp; <span id=/{endspan}\n<span id=/g' \
-    -e 's/&lt;/</g' \
-    -e 's/&gt;/>/g' \
-    -e 's/<h1>.*/xmrii_0001\t /' \
-    -e 's/<img src=\"images\/image[0]*\([1-9]*\)\.[jp][pn]g\" .*\/>/cut\1.png/' \
-    -e 's/<a\([^>]*\)>\([^<]*\)\(<span[^>]*>\)/\3\1((\2/g' \
-    -e 's/\({endspan}\)\([^<]*\)<\/a>/))\1\2/g' \
-    temp0 > temp1
+# index.html から temp.md に変換
 
+# 改行コードを\nにする
 LC_COLLATE=C.UTF-8 sed \
-    -e 's/.*_+-\(.*blockquote.*\)+-_.*/\1/' \
-    -e 's/_+-\(#*\)+-_\(<span id=\"[a-zA-Z0-9_]*\">\)/\2\1/' \
-    -e 's/_+-\(ケス\)+-_\(<span id=\"[a-zA-Z0-9_]*\">\)/\2\1/' \
-    -e 's/\({endspan}\)_+-\(|:---|---:|\)+-_/\2\1/' \
-    -e 's/\({endspan}\)_+-\(（カット[0-9]*）\)+-_/\2\1/' \
-    -e 's/\({endspan}\)\( *_+-[^+]*+-_ *\)/\2\1/g' \
-    -e 's/<span id=\"\([a-zA-Z0-9_]*\)\">\([^{]*\){endspan}/\1\t\2\n/g' \
-    -e 's/<span class=\"infty_silent\">\([^{]*\){endspan}/\1/g' \
-    temp1 > temp1a
-LC_COLLATE=C.UTF-8 sed \
-    -e 's/\(<rp>(<\/rp><rt>（<\/rt><rp>)<\/rp>\)\([ぁ-ゟ゠ァ-ヿ　（）]*\)<rp>(<\/rp><rt>）<\/rt><rp>)<\/rp>/\2\1/g' \
-    -e 's/<rt>（<\/rt>/<rt>（　　　）<\/rt>/g' \
-    -e 's/&ensp;<\/p>/<\/p>/g' \
-    -e 's/ class=\"ruby_level_[0-9]\"//g' \
-    -e 's/_+-//g' \
-    -e 's/+-_//g' \
-    temp1a > temp1b
-csplit temp1b /blockquote.*markdown/ /月.*の答/
+    -e ':a;N;$!ba;s/\r\n/\n/g' \
+    index.html > temp.md
 
+# htmlからmdへ
 LC_COLLATE=C.UTF-8 sed \
+    -e '/<?xml/d' \
+    -e '/<!DOCTYPE/d' \
+    -e '/<\/*html/d' \
+    -e '/<\/*head/d' \
+    -e '/<\/*meta/d' \
+    -e '/<\/*link/d' \
+    -e '/<\/*title/d' \
+    -e '/<\/*body/d' \
+    -e 's/<\/*div[^>]*>//g' \
+    -e '/<h1.*h1>/d' \
+    -e 's/<p>&ensp;<\/p>//g' \
+    -e 's/<p>/\n/g' \
+    -e 's/<\/p>//g' \
+    -e 's/^\t\t*//' \
+    -e 's/\(<span[^>]*>\)\(##*\)/\2 \1/g' \
+    -e 's/<span class=\"infty_silent\">ケス<\/span>.*<span class=\"infty_silent\">スケ<\/span>//g' \
+    -e 's/<span[^>]*><img .*image0000\([0-9]\)\.[jp][pn]g[^>]*\/><\/span>/![cut\1](media\/'$3'\/cut\1.png){: .migi}/' \
+    -e 's/\([^:]\)|<\/span>/\1<\/span>|/g' \
+    -e 's/\(<\/span>\)\(<span[^>]*>[0-9][0-9時間分][0-9時間分]*<\/span>\)/\1  \n\2/' \
+    -e 's/<p align=\"right\" style=\"text-align:right;\"><span /<span class=\"haigo\" /' \
     -e 's/&ensp;/ /g' \
-    -e 's/ppp/\n/g' \
-    -e 's/<\/p>//' \
-    -e 's/	//g' \
-    -e '/^$/d' \
-   xx01 > q.tsv
+    -e 's/<rt>＊<\/rt>/<rt>（　　　）<\/rt>/g' \
+    -e 's/ class=\"ruby_level_[0-9][0-9]*\"//g' \
+    -e 's/\(<a [^>]*\)><span /\1 /g' \
+    -e 's/<\/span><\/a>/<\/a>/g' \
+    temp.md > temp2.md
+mv temp2.md temp.md
+
+# 改行を含む表のフォーマットを整える
+LC_COLLATE=C.UTF-8 sed \
+    -e ':a;N;$!ba;s/<span class=\"infty_silent\">\(|:---|---:|\)<\/span>[^<]*</\n\1\n</' \
+    temp.md > temp2.md
+mv temp2.md temp.md
+
+# 2行以上の空きを1行の空きに減らす
+LC_COLLATE=C.UTF-8 sed \
+    -e ':a;N;$!ba;s/\n\n\n*/\n\n/g' \
+    temp.md > temp2.md
+mv temp2.md temp.md
+
+# id="xmri_XXXX" ごとに、smilからbeginとendを抽出
+n=$((1))
+xmri=`printf '%04X' $n`
+g=`grep "xmri_$xmri" mrii0001.smil`
+
+# id="xmri_XXXX" ごとに、smil内のXXXXが尽きるまで繰り返す
+while [[ $g != '' ]] ; do
+
+begin=`echo $g | sed -e 's/.*clip-begin=\"npt=\([0-9]*\.[0-9]*\)s.*/\1/' | bc -l`
+end=`echo $g | sed -e 's/.*clip-end=\"npt=\([0-9]*\.[0-9]*\)s.*/\1/' | bc -l`
+
+# durを計算
+dur="`echo $end-$begin | bc -l`"
+
+echo $begin
+echo $end
+echo $dur
+echo $n
+
+# id="xmri_XXXX" ごとに、durとbeginをtemp.mdに書き込む
 sed \
-    -e 's/<span [a-zA-Z0-9_\"=]*>//g' \
-    -e 's/{endspan}//g' \
-    -e 's/^[ \t]*//' \
-    temp1b > temp1m
-sed \
-    -e '/^[^x].*/d' \
-    -e '/^$/d' \
-    temp1m > paroles.tsv
-# calculate dur-begin.tsv
-awk '{
-    printf("%s\t%3.3f\n", $2-$1, $1)
-    }' \
-    begin-end.tsv > dur-begin.tsv
-# combine dur-begin.tsv and paroles.tsv
-paste dur-begin.tsv paroles.tsv > base.tsv
-# make span
-sed \
-    -e 's/\([0-9\.]*\)\t\([0-9\.]*\)\t\([a-z]*_[0-9A-Z]*\)\t\(（リンク）\)/<a href=\"\" data-dur=\"\1\" data-begin=\"\2\" id=\"\3\">\4<\/a><\/span>/' \
-    -e 's/\([0-9\.]*\)\t\([0-9\.]*\)\t\([a-z]*_[0-9A-Z]*\)\t\(.*\)/<span data-dur=\"\1\" data-begin=\"\2\" id=\"\3\" markdown=\"1\">\4<\/span>/' \
-    base.tsv > temp3
-LC_COLLATE=C.UTF-8 sed \
-    -e ':a;N;$!ba;s/<\/span>\n<a/<a/g' \
-    -e ':a;N;$!ba;s/<span[^>]*>\(#*\)<\/span>\n<span/\1 <span/g' \
-    -e ':a;N;$!ba;s/\(<span[^>]*>[0-9]*\.<\/span>\)\n\(<span\)/\n\1\2/g' \
-    temp3 > temp4
-LC_COLLATE=C.UTF-8 sed \
-    -e 's/<span[^>]*>\(cut[0-9]\)\(\.[jp][pn]g\)ppp<\/span>/![\1](media\/'$3'\/\1\2){: .migi}\n/g' \
-    -e 's/ppp<\/span>/<\/span>\n/g' \
-    -e 's/\(<span[^>]*>\)\(#*\)&ensp;/\n\2 \1/g' \
-    -e 's/<span\([^>]*\)>\( href[^(]*\)((\([^)]*\)))<\/span>/<a\1\2>\3<\/a>/g' \
-    -e 's/\([^月]*月.*の答.*\)/\1\n<blockquote markdown=\"1\">/' \
-    -e 's/^\(<span[^>]*>定例会：<\/span>\)$/<\/blockquote>\n\n\1/' \
-    -e 's/ケス[^ス]*スケ//g' \
-    -e '/>ケス/d' \
-    -e '/スケ</d' \
-    -e 's/|:---|---:|<\/span>/<\/span>\n|:---|---:|/g' \
-    -e 's/<span[^>]*> *<\/span>//g' \
-    -e 's/|<\/span>/<\/span>|/g' \
-    -e 's/>classhaigo/ class=\"haigo\">/g' \
-    -e 's/&ensp;/ /g' \
-    -e '/<span[^>]*>&thinsp;&thinsp;p*<\/span>/d' \
-    temp4 > temp40
+    -e "s|\(id=\"xmri_$xmri\"\)|data-dur=\"$dur\" data-begin=\"$begin\" \1 markdown=\"1\"|g" \
+temp.md > temp2.md
+mv temp2.md temp.md
 
-LC_COLLATE=C.UTF-8 sed \
-    -e ':a;N;$!ba;s/<span[^>]*>\(##*\)<\/span>\n\(<span[^>]*>[^\n]*<\/span>\)/\1 \2\n/g' \
-    temp40 > temp41
+# 次のidに進む
+n=$(($n+1))
+xmri=`printf '%04X' $n`
+g=`grep -i "xmri_$xmri" mrii0001.smil`
+done
 
-LC_COLLATE=C.UTF-8 sed \
-    -e 's/ppp<\/a>/<\/a>\n/g' \
-    -e ':a;N;$!ba;s/|\n/|/g' \
-    temp41 > temp42
+# temp.md をmm.mdの続きに追加
 
-LC_COLLATE=C.UTF-8 sed \
-    -e ':a;N;$!ba;s/\(##*\) *\n/\1 /g' \
-    temp42 > temp5
-
-LC_COLLATE=C.UTF-8 sed \
-    -e '/xmrii/d' \
-    -e 's/　/ /g' \
-    -e 's/\(.*>\)\(.*\)\(<a.*>\)\(（リンク）\)\(.*\)/\1\3\2\5/' \
-    -e 's/\(.*>やまびこ通信.*バックナンバー<.*\)$/\n# \1\n/' \
-    -e 's/\(.*>[0-9]*年[0-9]*月号<.*\)$/- \1/' \
-    -e 's/\([^>]*>\)\(#* \)\(.*\)$/\n\2\1\3\n/' \
-    -e 's/\(.*>定例会：<.*\)$/\n\1/' \
-    -e 's/\(.*中央図書館3階.*\)$/\1  /' \
-    -e 's/\(.*\)やまびこ代表 *大川 *薫\(.*\)$/\1やまびこ代表 大川 薫\2  /' \
-    -e 's/\(.*03-3910-7331.*\)$/\1  /' \
-    -e 's/\(.*href="\)\(".*このサイトについて.*\)$/\1mailto:ymbk2016ml@gmail\.com?Subject=やまびこウェブサイトについて\2/' \
-    -e 's/\(<rp>(<\/rp><rt>（<\/rt><rp>)<\/rp>\)\([ぁ-ゟ゠ァ-ヿ　（）]*\)<rp>(<\/rp><rt>）<\/rt><rp>)<\/rp>/\2\1/g' \
-    -e 's/（カット\([0-9]*\)）<\/span>/<\/span>\n\n<img class=\"migi\" src=\"media\/'$3'\/cut\1\.png" alt=\"\" \/>\n/' \
-    -e 's/\(<span[^>]*>No\.[0-9 ]*<\/span>\)/\1/' \
-    temp5 > temp6
-
-
-    if [[ `grep "読み上げは省略" temp6` == '' ]] ; then
-
-      csplit temp6 /月.*の.*答/
-      cat xx00 q.tsv xx01 >> ../$3.md
-
-    else
-
-      csplit temp6 /読み上げは省略/
-      LC_COLLATE=C.UTF-8 sed \
-          -e '/読み上げは省略/d' \
-          xx01 > xx01m
-      cat xx00 q.tsv xx01m >> ../$3.md
-
-    fi
+cat temp.md >> ../$3.md
 
 
 # wavからmp3とoggを生成
