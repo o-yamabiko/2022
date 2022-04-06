@@ -4,7 +4,7 @@
 # 印刷用ページも作成
 # バックナンバーリストに追加
 #
-# MultimediaDAISY2.02 directory $1; できているテキストの編集だけするなら$1=text
+# MultimediaDAISY2.02 directory $1; ./media/memo を書き換えてテキストの再編集だけするなら$1=text
 # yyyy $2
 # mm $3
 # done: CD製作時間の改行（行詰め、  入れ）
