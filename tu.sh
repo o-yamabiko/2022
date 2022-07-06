@@ -11,9 +11,10 @@
 # done: クイズの問題に付くルビが正しく認識できずq.tsvが空になる。やり方を根本的に変えて、xmri_nnnnを1個ずつ探し、開始時刻終了時刻を計算して入れ、nnnnを+1するのをxmri_nnnnがみつからなくなるまで繰り返す
 # done: 原稿のルビ形式を全角＊に変更してみる
 # done: blockquote が消えてしまう。残るようにする。
+# done: ルビの部分、 >＊< を >（　　　）< に変換
 # todo: トップページの「最新号」リンクを自動更新
 # todo: tugi を自動でありなし区別し、前月号にもtugiを挿入
-# todo: ルビの部分、 >＊< を >（　　　）< に変換
+
 
 # 今号、前号、次号の年と月を取り出し
 if [[ $3 == '01' ]] ; then
@@ -124,7 +125,7 @@ LC_COLLATE=C.UTF-8 sed \
     -e 's/\(<\/span>\)\(<span[^>]*>[0-9][0-9時間分][0-9時間分]*<\/span>\)/\1  \n\2/' \
     -e 's/<p align=\"right\" style=\"text-align:right;\"><span /<span class=\"haigo\" /' \
     -e 's/&ensp;/ /g' \
-    -e 's/<rt>＊<\/rt>/<rt>（　　　）<\/rt>/g' \
+    -e 's/<rt>[＊*]<\/rt>/<rt>（　　　）<\/rt>/g' \
     -e 's/ class=\"ruby_level_[0-9][0-9]*\"//g' \
     -e 's/\(<a [^>]*\)><span /\1 /g' \
     -e 's/<\/span><\/a>/<\/a>/g' \
@@ -230,7 +231,7 @@ sed \
     -e '/^background:/d' \
     -e '/^imagefrom:/d' \
     -e '/^imagefromurl:/d' \
-    -e 's/^\(tugi:.*\)/\1\nnoindex: true\nprint: true/' \
+    -e 's/^\(navigation:.*\)/noindex: true\nprint: true\n\1/' \
     $3".md" > $3"p.md"
 
 
