@@ -62,6 +62,7 @@ background="background: "$3"/default.png"
 imagefrom="imagefrom:  @ Illust AC"
 imagefromurl="imagefromurl: "
 
+mkdir -p ./media/$3
 echo "$iro" > ./media/$3/memo
 echo "$gra" >> ./media/$3/memo
 echo "$background" >> ./media/$3/memo
@@ -125,6 +126,7 @@ LC_COLLATE=C.UTF-8 sed \
     -e 's/\(<\/span>\)\(<span[^>]*>[0-9][0-9時間分][0-9時間分]*<\/span>\)/\1  \n\2/' \
     -e 's/<p align=\"right\" style=\"text-align:right;\"><span /<span class=\"haigo\" /' \
     -e 's/&ensp;/ /g' \
+    -e "s/\(>[^<]*\)'\([^<]*<\)/\1\&apos;\2/g" \
     -e 's/<rt>[＊*]<\/rt>/<rt>（　　　）<\/rt>/g' \
     -e 's/ class=\"ruby_level_[0-9][0-9]*\"//g' \
     -e 's/\(<a [^>]*\)><span /\1 /g' \
