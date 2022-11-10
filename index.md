@@ -2,7 +2,7 @@
 layout: caymanyomi
 title: やまびこ通信 2022年
 author: 音訳グループ やまびこ
-date: 2022-10-13T18:07:23Z
+date: 2022-11-10T16:30:03Z
 iro: 2679B9
 gra: 95B926
 ---
@@ -11,6 +11,7 @@ gra: 95B926
 
 ## 音声付き
 
+- <a href="../2022/11.html">2022年11月号 <img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>{: .highline}
 - <a href="../2022/10.html">2022年10月号 <img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>{: .highline}
 - <a href="../2022/09.html">2022年9月号 <img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>{: .highline}
 - <a href="../2022/08.html">2022年8月号 <img src="media/Speaker_Icon_gray.png" srcset="media/Speaker_Icon_gray.svg" alt="音声付き" class="gyo" /></a>{: .highline}
@@ -24,6 +25,7 @@ gra: 95B926
 
 ## 音声無し
 
+- <a href="../2022/11p.html">2022年11月号</a>{: .highline}
 - <a href="../2022/10p.html">2022年10月号</a>{: .highline}
 - <a href="../2022/09p.html">2022年9月号</a>{: .highline}
 - <a href="../2022/08p.html">2022年8月号</a>{: .highline}
